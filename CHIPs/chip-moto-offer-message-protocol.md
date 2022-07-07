@@ -7,24 +7,18 @@
  Status        | < Creator must leave this blank. Editor will assign a status.> 
  Category      | <Standards Track \| Process \| Informational>                
  Sub-Category  | < Add according to Category>                                 
- Created       | <Date created, using yyyy-mm-dd format (ISO 8601)>           
- Requires      | <CHIP number(s), (optional)>                                 
- Replaces      | <CHIP number, (optional)>                                    
- Superseded-By | <CHIP number (only allowed for Obsolete CHIPs)>              
-
-This is the template for all CHIPs to use. Please fill it out according to the guidelines laid out in [chip001](/CHIPs/chip-0001.md). All media associated with this CHIP should be added to the `assets/chip-<CHIP>` folder, which you may create after you receive your CHIP number.
-
-Copy the template file to the `chips` folder, rename it to `chip-<your name>-<your proposal>`, fill it out, and submit it as a pull request.
+ Created       | 2022-07-06                                                   
+ Requires      | N/A                                                          
+ Replaces      | N/A                                                          
+ Superseded-By | N/A                                                          
 
 ## Abstract
-Give a single-paragraph description of your proposal. The abstract should stand on its own -- someone who reads it should be able to understand the gist of your proposal without reading anything else.
+Offer files are an amazing, revolutionary tool for facilitating trustless exchanges. Let's build on that.
 
 ## Motivation
-Current protocol is pretty raw - in the Keybase group @chia_offers#offers-trading, messages take the form
+Current protocol is pretty raw - in the Keybase group @chia_offers#offers-trading, messages take the format `Offering: [1_nft1zh2a0fr9dwmx24nwccn835s0wuhjtqxh65xrmfenk2smzyhyvyqq34ruan], Requesting: [3.99 XCH]` and of course have the offer file itself attached as a blob.
 
-`Offering: [1_nft1zh2a0fr9dwmx24nwccn835s0wuhjtqxh65xrmfenk2smzyhyvyqq34ruan], Requesting: [3.99 XCH]`
-
-I think we can do better. Defining a format for these messages will facilitate better communications no matter the transport, be it Keybase or Discord or SSB or something we haven't thought of yet.
+I think we can do better. Defining a machine-friendly format for these messages will facilitate better communications no matter the transport, be it Keybase or Discord or SSB or something we haven't thought of yet.
 
   * What problem are you trying to solve?
   * How would this proposal benefit Chia's overall ecosystem?
