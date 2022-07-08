@@ -13,14 +13,22 @@
  Superseded-By | N/A                                                          
 
 ## Abstract
-Offer files are an amazing, revolutionary tool for facilitating trustless exchanges. Let's build on that.
+The traditional fintech industry uses electronic trading protocols in combination with centralized "sources of truth" to keep the world's stock exchanges ticking along. Brokers use various electronic protocols to communicate with the various stock exchanges they've been granted access to; the messages passed by these protocols are used to fetch current price and order information, transact buy and sell orders, and communicate settlement data (TODO I'm sure there's more applications than just these)
+
+If we're going to build a decentralized market where buyers and sellers compete against one another - a Decentralized Exchange, if you will - Offer files are only one of the structures we'll need. We'll also need a protocol for describing the trades we're interested in. This protocol will consist of a messaging format as well as a message transport layer; this document focuses on the message format.
+
+Unsurprisingly, a Babel of protocols emerged prior to the full Internetification of finance, but it looks like FIX (Financial Information eXchange) format has become something approaching an industry standard.
+
+Chia gives us the ability to build a Market without any centralized exchange. Note that, aside from price and stock inquiries, the Chia blockchain, in conjunction with Offer files, neatly supersedes any need for those buy / sell / settlement / confirmation messages and their corresponding (centralized) ledgers. 
+
+
 
 ## Motivation
-Current protocol is pretty raw - in the Keybase group @chia_offers#offers-trading, messages take the format `Offering: [1_nft1zh2a0fr9dwmx24nwccn835s0wuhjtqxh65xrmfenk2smzyhyvyqq34ruan], Requesting: [3.99 XCH]` and of course have the offer file itself attached as a blob.
+Current protocol is pretty raw - in the Keybase group @chia_offers#offers-trading, messages take the format `Offering: [1_nft1zh2a0fr9dwmx24nwccn835s0wuhjtqxh65xrmfenk2smzyhyvyqq34ruan], Requesting: [3.99 XCH]` and of course have the offer file itself attached as a blob. 
 
-I think we can do better. Defining a machine-friendly format for these messages will facilitate better communications no matter the transport, be it Keybase or Discord or SSB or something we haven't thought of yet.
+I think we can do better. Defining a machine-friendly format for these messages will facilitate better trading no matter the transport, be it Keybase or Discord or SSB or something we haven't thought of yet.
 
-  * What problem are you trying to solve?
+  * Prospective NFT buyers only know their budget before they query the market; prospective NFT sellers only know their inventory before they query the market. How does one compose an Offer file, when the most crucial input to that offer file is the one that you can't get unless you first interact with the market?
   * How would this proposal benefit Chia's overall ecosystem?
   * What are the use cases for this proposal?
   * How technically feasible will this be to implement?
@@ -36,7 +44,7 @@ If your proposal has any backwards incompatibilities, you must list them here. M
 
 ## Rationale
 Describe the reasons for designing your features in the way you have proposed. Make sure to include:
-  * Why did you choose your design?
+  * Extending the functionality of the mempool to support additional price discovery methods?
   * What design decisions did you make?
   * What alternative designs did you consider?
   * How have you achieved community consensus for your design? Provide links to discussions if available.
