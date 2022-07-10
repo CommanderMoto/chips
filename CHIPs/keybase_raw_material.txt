@@ -1,0 +1,162 @@
+jonawan:
+  Is it possible to have an offer file that does "I offer 2 XCH for either nft123 or nft234 or nft345".
+  Or is this just 3 separate offer files on the same 2 XCH coin(s) -- and leave it to the DEX to consolidate them in the UI?
+moto:
+  The Chia GUI won’t actually allow you to create three offers against the same coins, i believe? Though I’ve been told it is possible from the command line
+jonawan:
+  yeah you could do it via CLI, but wondering if it could exist within a single offer file -- maybe not with current implementation but is it possible?
+moto:
+  I’ve been thinking about a similar problem, say I want to offer 2 XCH for any Chia Friend that’s a marmot. No broccoli, no bird, no timelord, only marmot. Could be the coolest marmot, could be the lamest marmot, I’m offering 2 XCH.
+  This seems like too much logic to ask from the L1 offer file mechanism. But that’s why we have layers, so let’s talk about the next one up!
+  L1 offers are a fine primitive, but they don’t support very smooth price discovery
+  So. I started my career working on XMPP, multi-user chat servers, peer-to-peer messaging. It’s perhaps not surprising that when I think about how I’d design a L2 for more complex offers, I’ll think about it in terms of a multi-participant chat service
+  Now, with all the different NFTs and CATs and what not being developed, I think maybe the best broker for Chia Friends is not going to be the same party as the best broker for Moto Friends.
+  In other words: I would like to see it be easy to develop new agents, specializing in particular varieties of NFT for instance, that facilitate these complex queries of the market
+  This is the key insight I want to share. A messaging protocol for Offers, one that’s got an easy-to-integrate software library, is the thing that really is going to make the capital start pumping in these new markets.
+  So, here’s an overview of SSB. I will be reading it with our decentralized exchange use case in mind. commenting as I have thoughts. https://dl.acm.org/doi/10.1145/3357150.3357396
+
+jonawan:
+  (re:moto)
+  this can be accomplished by a wallet... select all the marmot NFTs and generate a big offer file with the same 2XCH coin to be traded with a list of NFTs. in concept this is the same as many separate offer files
+  and it can be done today on CLI -- but it would be up to Dexie to know to combine together offers that have the same input coins
+  i'm wondering if it's possible to do it within a single offer file
+
+moto:
+  (re: jonawan) I’m pretty sure I understand what it is you’re asking for, I’m pretty sure it’s not practical on L1, but I’d really like to figure out how to make an L2 that’s as open as possible to new participants
+  What I’m imagining is a chat protocol, multi-user rooms where you can express an interest in buying something in a more complex / fluent fashion than Offer files alone allow.
+  It would be natural for folks to build bots around those offer-solicitation channels, to provide better brokerage services for more discerning markets
+  One which would allow you to send a well-formed message like
+  WANT: [nftxyz | nftabc | nftzyx] OFFER: [1000000 SBX ; 0.22 MRMT]
+  Then anyone who had those NFTs would be notified of your offer.
+  But it could get annoying if someone abused that system, making absurdly low offers - I’d want a way to block people
+So once again I come back to SSB, which is based around subscribing to updates from trustworthy parties. You can also block messages from any unwelcome party.
+In this SSB-based Uberdex, brokers of various assets on the Chia blockchain would run SSB “pub” nodes, and publish their pub’s connection information widely.
+Each broker’s Pub would be a place for traders to gather and negotiate a market. Initially at least, traders are humans, swapping offer files and keeping track of who wants what NFT via handwritten notes.
+We’re already at this stage of evolution, sorta. Discord is awful, but it’s popular.
+I think that maybe if we could nudge new projects towards using SSB, things might consolidate and automate a lot more easily
+trepca:
+  So users would be sending offer files to brokers that would distribute them to their subscribers?
+moto:
+  Uh, not quite …
+  In the system I’m proposing, L1 Offer files don’t get generated until the very last stages of finalizing a sale transaction
+  First I have to tell people I’m interested in buying Marmot Gene. Otherwise, the current owner of that NFT might never know the riches I can offer.
+  So folks who are interested in selling their Chia Friends, maybe they go to a pub where folks interested in buying Chia Friends state what they’re willing to pay, and using that information, the prospective seller can post an offer with a strong expectation it’ll be promptly accepted
+  Likewise prospective buyers could see what others have paid historically, by viewing the history of public trade information which the pub serves as a sort of hub / repository for.
+  For sufficiently vibrant markets, bots could watch the pub for “good deals” and keep inventory, ready to satisfy any buyer’s wishes with the fastest Offer out there.
+  Okay, I'm thinking about starting a CHIP. A Decentralized Trading Protocol. Before I get too deep, what prior art is there?
+  Quite a few protocols out there, actually. This is going to take some collaboration.
+  Pillar. OUCH. FIX. Fun.
+  oye. okay, maybe we crib a base feature set based on a survey of existing platforms. Maybe in the morning, after an episode of Venture Brothers.
+  A CHIP is born. I've named it the CHia Offer Message Protocol: https://github.com/CommanderMoto/chips/blob/main/CHIPs/chip-moto-offer-message-protocol.md
+acevail:
+  Nice, I just thought about a peer to peer offer trading protocol the last couple of days!
+  I'd love to help figuring out how to CHOMP
+moto:
+  so a messaging format is just the first proposal in my master plan, which is to convince y'all to add an optional Decentralized Exchange module into the complement of Chia daemons.
+  this way when you're looking at the assets in your Chia wallet, there's an option to look up their live value on the market, against whatever trading pair you want
+altdenky:
+  looking for a parallel gossiping protocol for 'exchange' data?
+  *parallel to the existing blockchain protocol
+moto:
+  Basically yeah
+  L1.5-ish
+  the offers are executed on L1, but there's higher-level communications that lead to that finalization
+  I will tip my hand and confess I have a fondness for the architecture of SSB. I worry it might not be a practical / performant option for our purposes, and I think that's worth discussing.
+  * as that transport-layer communication protocol - the daemon that "chia start dex" fires up
+altdenky:
+  what would get propagated other than the offer file?
+moto:
+  Well, in the decentralized exchange I'm imagining, you want a way to ask the market what's for sale without making an offer. Soliciting offers.
+altdenky:
+  wouldn't that just would that be a matter of receiving all the submitted offers?  basically a mempool equivalent for offers and when you join the p2p network you bring your 'mempool' up to sync as other nodes gossip to you
+moto:
+  You describe the asset you want, including some sort of extensible metadata query language plugin [INCOMPLETE] - published into a feed
+  subscribers to that feed, if they have what you want, can reply into the same feed with Offer files
+altdenky:
+  is that not you submitting an offer from the other direction?
+moto:
+  anybody in the feed can snatch an Offer that's been made - the price is now public knowledge
+  finer-grained liquidity
+altdenky:
+  if you want to buy xch using your sbx, you can look for existing offers to sell xch for sbx or submit your offer to buy xch using sbx.
+moto:
+  for more fungible assets, I understand and agree that the mechanism, as designed, still seems like it ought to work, once we reach some volume. But NFTs, man.
+  I want a gold timelord or a blue marmot. I have 10XCH to spend. No matching NFT is presently offered for sale, but also it's really difficult for owners of those NFTs to know their market value.
+altdenky:
+  you want to be able to say 'i will pay 3xch for any nft by did ABC in collection XYZ'?
+  mm, i haven't worked on the chialisp side but i think this is exactly why some of the metadata is on chain.
+moto:
+  right, I want to have a communications channel where those sorts of more-complex offers can be described and negotiated, above the L1
+altdenky:
+  i don't think the 'blue marmot' level is though.  i think that's the off-chain metadata
+moto:
+  the object being, I say "I want a blue marmot or a yellow parrot and I'll pay 10 XCH" -> owners of blue marmot and yellow parrot NFTs can see, in their NFT wallet, in the "price history" graph, that there was a relevant sale at some point in the past
+  this is a decentralized financial messaging protocol that's "only" using Chia Offers to consummate the transactions
+  yes: this sort of sophisticated price history - at the wallet level - is at present primarily a function offered by sites offering centralized exchange services
+  Read up on SSB. The doc I linked is probably too deep a dive, actually; let me see if I can find a friendlier intro
+altdenky:
+  so a mempool of these more flexible offers based on off-chain data.  monitoring of the chain for any completed transactions identifiable as 'trades' (just completed on-chain offers i guess, at least to start).  some tooling for searching and filtering the mempool.  maybe automated on-chain concrete offer creation.
+  to make it generic we need a schema for the off-chain data on which you can operate.  i think chip7 has an option for that.
+moto:
+  a bit higher-level, overview includes key concept of "pubs": https://scuttlebot.io/more/protocols/secure-scuttlebutt.html
+  Brokers and pubs seem to map very well to one another. A broker maintains an inventory and has an interest in collecting price information which they can then use to make offers based on their inventory
+altdenky:
+  i'm all for existing tooling.  in this case we have some in-project existing tooling.  (presuming you think about it in terms of being in chia-blockchain which i'm not saying it would or should be there, but...)  so what does ssb bring instead of another instance of the mempool idea and existing gossiping etc.
+moto:
+  totally valid question. The crucial thing that SSB offers is SNR control. A Pub operator has complete control over what feeds they subscribe to. Feeds are associated with decentralized identities.
+  So it becomes very simple to notice a bad actor flooding your pub with bogus price inquiries and boot 'em. They can still inquire elsewhere, they just can't ask you.
+altdenky:
+  i guess right now in terms of the transaction mempool that is only done at the peer level.  not the data level.  other than simply invalid transactions.
+moto:
+  right. And the mempool isn't very robust *as performant as I'd like - bwfree and I were able to visibly impact it with some nearly-free commandline fuckery
+  SSB is designed around the assumption that there are bad actors and good actors and you wanna block the one and propagate the other
+  but crucially, nobody has to agree on who's bad or who's good, because those decisions are made at the individual level
+altdenky:
+  well, the distinction i see is that you don't ignore bad peers but rather ignore bad offer originators.  (i mean sure, also bad peers but...)
+  right now when we gossip along a tx we don't include the originator of the tx.  just the tx itself.  so i guess you could adjust the code to block a configurable source or destination tx list.  but with the default of a new address per tx, that doesn't do a whole lot.
+moto:
+  so ... yeah, I posit the need for a trading layer, with ID-based controls to filter signal from noise while still facilitating rich data collection
+  SSB is a long-term goal, though. In the immediate term, let's work out what the trading messages look like; we'll debate the message transport layer after we've got the message format sorted.
+altdenky:
+  how do you avoid bad sources id hopping?
+moto:
+  well, that's a problem that I intend for SSB to address, but again, I think the first goal should be to define what well-formed financial information queries look like
+altdenky:
+  i guess there's a form for xch/cats and a form for nfts.  the nft form would allow for whatever constraints are sensible based on the schema.  you can make constraints on any field the schema allows and if it's numeric then stuff like > < ==.  for strings you might have substring etc.
+moto:
+  I'm hoping that the messaging format will offer utility on its own. For instance, the official Chia Wallet currently gives the option to post offer files to a couple of select exchanges.
+  What I don't have, aside from the little bit I (or more likely, some website operator) can deduce from monitoring the mempool, is any way of knowing what my various assets are worth in terms of trading pairs.
+  So another way of looking at this is, we're using this extra layer of trading messages to offer the market better price intelligence
+altdenky:
+  i think the conclusion was that we can identify the result of offer files on chain.  so i think the chain still offers the history.  but this layer offers the ...  i don't know the terminology.  the spread maybe?
+moto:
+  We're both at a loss for the proper term. But yeah - the more liquid the asset, the less utility offered by this additional price intelligence
+  On the other hand, for something illiquid like an NFT in a crowded market, this might be the only way to build price intelligence about your one-of-a-kind thingamabob
+jeffmthomas:
+  A friend and I are working on an NFT browser for Chia & its forks.  We are hoping to provide the community with a real time complete database of ALL NFT's on the blockchain.
+moto:
+  Well sir, I would like to chat with you about a little Electronic Trading Data format which I think you’d find interesting
+  CHOMP is an idea meant to facilitate price discovery, and the service you describe seems like one that folks will definitely want trading data from
+  I’m not a domain expert in trading, but I do have quite a bit of experience with decentralized / federated communication networks
+jeffmthomas:
+  Interestingly, We have been trying to figure out the best way to propagate DEX offers and trading into our system.
+  I am still trying to figure out how to decode whether an NFT was:
+  a.) Transferred to another address without an offer
+  b.) Transferred to another address as an accepted offer
+  c.) Part of an offer that was cancelled
+
+  I have noticed a couple of things just browsing through the database:
+  1.) There are 3 initial coin spends on the same block for every NFT minted.
+  2.) When an NFT coin is spent, there are either 1 or 2 coin spends in the same block for each NFT.
+  3.) I am for now assuming that spends back to the original puzzlehash are coming from cancelled offers (where else would they come from?)
+moto:
+  Alright, I'm calling it. There is substantial community interest, so where's our DEX working group?
+  Instead of a few gatekeepers paying for access to NYSE / NASDAQ terminals, Chia + ( decentralized ID | secure scuttlebutt ) gives us the primitives we need for everyman to connect direct to the Big Exchange In The Sky and perform the exact same operations - with trustless transactions replacing expensive and unreliable humans
+  we just need message formats. transport layers. I know a few things about these.
+  a clever protocol design will include some mechanism for compatibility with FIX, which I've gathered is the old-guard industry standard
+jeffmthomas:
+  OK I like where you are going
+  We definitely need a better way for offers to become available to users (and I really like what I read about SSB).
+moto:
+  And there’s also demand from people who want to “talk about” trades in ways that are more complex than L1 permits. Specifying a user’s interest in pricing for an NFT matching specific attributes, for instance.
+  SSB also could facilitate useful alignments with one’s DID wallet, being itself an identity-oriented (messaging | public blockchain database) protocol
