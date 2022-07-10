@@ -15,11 +15,15 @@
 ## Abstract
 The traditional fintech industry uses electronic trading protocols in combination with centralized "sources of truth" to keep the world's stock exchanges ticking along. Brokers use electronic protocols to communicate with the various stock exchanges they've been granted access to. The messages passed by these protocols are used to fetch current price and order information, transact buy and sell orders, and communicate settlement data (TODO I'm sure there's more applications than just these)
 
-If we're going to build a decentralized market where buyers and sellers compete against one another - a Decentralized Exchange, if you will - Offer files are only one of the structures we'll need. We'll also need a protocol for describing the trades we're interested in. This protocol will consist of a messaging format as well as a message transport layer; this document focuses on the message format.
-
-Unsurprisingly, a Babel of protocols emerged prior to the full Internetification of finance, but it looks like FIX (Financial Information eXchange) format has become something approaching an industry standard.
+Unsurprisingly, a Babel of electronic trading protocols were developed prior to the full Internetification of finance, but it looks like FIX (Financial Information eXchange) format has become something approaching an industry standard, as message format for financial information.
 
 Chia gives us the ability to build a Market without any centralized exchange. Note that, aside from price and stock inquiries, the Chia blockchain, in conjunction with Offer files, neatly supersedes any need for those buy / sell / settlement / confirmation messages and their corresponding (centralized) ledgers.
+
+If we're going to build a decentralized market where buyers and sellers compete against one another - a Decentralized Exchange, if you will - Offer files on L1 are only one of the structures we'll need. We'll also need a protocol for describing the trades we're interested in. The tradfi world came up with the FIX message format, which they use to send messages across a variety of network transport layers. Chia's global, decentralized exchange, too, will consist of a messaging format as well as a message / network transport layer. 
+
+The Internet has amply demonstrated the hazards of unconstrained information flows - our exchange system needs to be resistant against spam and disinformation attacks The RECOMMENDED message / network transport layer for this protocol will be "a peer-to-peer network which is capable of making strong assertions about the identity of participants." (this author is fond of SSB). 
+
+However, this document is intended only to provide the CHOMP messaging format, regardless of the underlying message / network transport.
 
 
 
