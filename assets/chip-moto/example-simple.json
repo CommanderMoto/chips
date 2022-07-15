@@ -1,0 +1,30 @@
+{
+    "format": "CHIP-moto",
+    "type": "inquiry",
+    "referenceId": "bob-request-69",
+    "params": {
+        "seeking": {
+            "assetId": "XCH",
+            "quantity": "LIMIT"
+        },
+        "offering": {
+            "assetId": "USDS",
+            "quantity": 1000
+        }
+    }
+}
+
+{
+    "format": "CHIP-moto",
+    "type": "offer",
+    "params": {
+        "offering": {
+            // EITHER an offerURI XOR an offerTextEncoded must be included
+            "offerURI": "ipfs://fasdfksdkjkfljsdakfjalkfj",
+            // this might be too bulky for our chosen message transport?
+            "offerTextEncoded": "asdfklsdajfklajgklsfdjthisisthetextofanoffer",
+            // optional, advisory
+            "replyTo": "bob-request-69"
+        }
+    }
+}

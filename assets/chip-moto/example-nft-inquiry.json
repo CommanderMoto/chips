@@ -1,0 +1,51 @@
+{
+    "format": "CHIP-moto",
+    "type": "inquiry",
+    "referenceId": "alice-request-00420",
+    "params": {
+        "seeking": {
+            "search": {
+                "assetType": "NFT1",
+                "attributes": {
+                    "creatorDID": "did:chia:112434356234321452rwqeq",
+                    "metadata": {
+                        "format": "CHIP-0007",
+                            "collection": {
+                                "id": "e43fcfe6-1d5c-4d6e-82da-5de3aa8b3b57",
+                                "attributes": [
+                                    {
+                                        "trait_type": "Color",
+                                        "value": "Yellow"
+                                    },
+                                    {
+                                        "trait_type": "Species",
+                                        "value": "Budgie"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+        },
+        "offering": {
+            "assetId": "509deafe3cd8bbfbb9ccce1d930e3d7b57b40c964fa33379b18d628175eb7a8f", // Chia Holiday Token
+            "quantity": 1
+        }
+    }
+}
+
+{
+    "format": "CHIP-moto",
+    "type": "offer",
+    "params": {
+        "offering": {
+            // EITHER an offerURI XOR an offerTextEncoded must be included
+            "offerURI": "ipfs://fasdfksdkjkfljsdakfjalkfj",
+            // this might be too bulky for our chosen message transport?
+            "offerTextEncoded": "asdfklsdajfklajgklsfdjthisisthetextofanoffer",
+            // optional, advisory
+            "replyTo": "alice-request-00420"
+        }
+    }
+}
