@@ -7,7 +7,11 @@
             "search": {
                 "assetType": "NFT1",
                 "attributes": {
+                    // assuming I want to be sure I get an NFT from the correct
+                    // creator (optional)
                     "creatorDID": "did:chia:112434356234321452rwqeq",
+                    // CHIP-007 metadata is supported via the CHOMP-SA (Search
+                    // Attributes) extension
                     "metadata": {
                         "format": "CHIP-0007",
                             "collection": {
@@ -29,7 +33,7 @@
             },
         },
         "offering": {
-            "assetId": "509deafe3cd8bbfbb9ccce1d930e3d7b57b40c964fa33379b18d628175eb7a8f", // Chia Holiday Token
+            "assetId": "509de[...]b7a8f", // Chia Holiday Token
             "quantity": 1
         }
     }
