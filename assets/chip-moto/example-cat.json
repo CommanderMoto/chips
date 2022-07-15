@@ -1,19 +1,18 @@
-// Interested in buying 10.0 XCH ; interested in paying with MRMT ; asking the
-// market what that trading pair is worth:
+// Offering 1000USDS in exchange for as much MRMT as that will buy:
 {
     "format": "CHIP-moto",
     "type": "inquiry",
-    "referenceId": "alice-request-42",
+    "referenceId": "bob-request-69",
     "params": {
         "seeking": {
-            "assetId": "XCH", // Either a TAIL or the magic string 'XCH'
-            "assetName": "XCH",
-            "quantity": 10.0
+            "assetId": "8ebf855de6eb146db5602f0456d2f0cbe750d57f821b6f91a8592ee9f1d4cf31",
+            "assetName": "MRMT", // optional / advisory only
+            "quantity": "LIMIT" // however many MRMT people Offer in response to my inquiry
         },
         "offering": {
-            "assetId": "8ebf855de6eb146db5602f0456d2f0cbe750d57f821b6f91a8592ee9f1d4cf31",
-            "assetName": "MRMT",
-            "quantity": "MARKET"
+            "assetId": "6d95dae356e32a71db5ddcb42224754a02524c615c5fc35f568c2af04774e589",
+            "assetName": "USDS",
+            "quantity": 1000.0
         }
     }
 }
@@ -28,7 +27,7 @@
             // this might be too bulky for our chosen message transport?
             "offerTextEncoded": "asdfklsdajfklajgklsfdjthisisthetextofanoffer",
             // optional, advisory
-            "replyTo": "alice-request-42"
+            "replyTo": "bob-request-69"
         }
     }
 }
